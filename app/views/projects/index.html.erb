@@ -1,0 +1,32 @@
+<div class="container mt-4">
+  <!-- Page Header -->
+  <div class="row mb-4">
+    <div class="col text-center">
+      <h1 class="display-4">Projects</h1>
+      <%= link_to 'New Project', new_project_path, class: "btn btn-primary mt-2" %>
+    </div>
+  </div>
+
+  <!-- Projects List -->
+  <div class="row">
+    <% if @projects.any? %>
+      <% @projects.each do |project| %>
+        <div class="col-md-4 mb-4">
+          <div class="card shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                <%= link_to project.name, project_path(project), class: "text-decoration-none" %>
+              </h5>
+              <p class="card-text text-muted"><%= project.description %></p>
+              <%= link_to 'View Project', project_path(project), class: "btn btn-secondary btn-sm" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col text-center">
+        <p class="text-muted">No projects available. <%= link_to 'Create a new project', new_project_path, class: "text-decoration-none" %>.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

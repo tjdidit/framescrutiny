@@ -1,0 +1,73 @@
+<%= javascript_include_tag 'daily_show', defer: true %>
+
+<div class="container mt-4">
+  <!-- Video Section -->
+  <div class="row mb-4">
+    <div class="col text-center">
+      <% if @daily.video.attached? %>
+        <video
+          id="daily-video"
+          class="video-js vjs-default-skin vjs-big-play-centered"
+          controls
+          preload="auto"
+          width="640"
+          height="360"
+          data-setup="{}">
+          <source src="<%= url_for(@daily.video) %>" type="<%= @daily.video.blob.content_type %>">
+        </video>
+      <% else %>
+        <p class="text-muted">No video uploaded for this daily.</p>
+      <% end %>
+    </div>
+  </div>
+<!-- Revisions Section -->
+<div class="row">
+  <div class="col">
+    <h2 class="mb-3">Revisions</h2>
+    <% if @revisions.any? %>
+      <ul class="list-group">
+  <% @revisions.each do |revision| %>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>
+        <strong><%= revision.user&.email || "Unknown User" %></strong> wrote at
+        <strong><%= revision.timestamp %></strong>:
+        <%= revision.comment %>
+      </div>
+      <% if current_user.admin? %>
+        <%= button_to "Delete", project_daily_revision_path(@daily.project, @daily, revision), 
+            method: :delete, 
+            class: "btn btn-danger btn-sm", 
+            data: { confirm: "Are you sure you want to delete this revision?" } %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+    <% else %>
+      <p class="text-muted">No revisions added yet.</p>
+    <% end %>
+  </div>
+</div>
+
+  <!-- Add a Revision Section -->
+  <div class="row mt-4">
+    <div class="col">
+      <h3>Add a Revision</h3>
+      <%= form_with(model: [@daily.project, @daily, @revision], url: project_daily_revisions_path(@daily.project, @daily), method: :post) do |form| %>
+        <div class="mb-3">
+          <%= form.label :timestamp, 'Timestamp (HH:MM:SS:FF)', class: "form-label" %>
+          <div class="input-group">
+            <%= form.text_field :timestamp, id: 'revision_timestamp', class: "form-control", placeholder: "HH:MM:SS:FF" %>
+            <button type="button" id="grab-timestamp" class="btn btn-secondary">Grab Timestamp</button>
+          </div>
+        </div>
+        <div class="mb-3">
+          <%= form.label :comment, class: "form-label" %>
+          <%= form.text_area :comment, class: "form-control", placeholder: "Enter your comment here..." %>
+        </div>
+        <div>
+          <%= form.submit 'Add Revision', class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

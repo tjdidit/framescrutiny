@@ -1,0 +1,69 @@
+<div class="container mt-4">
+  <h1>Dashboard</h1>
+
+  <!-- Regular User Content -->
+  <div class="row">
+    <div class="col">
+      <h2>Your Projects</h2>
+      <ul class="list-group">
+        <% @projects.each do |project| %>
+          <li class="list-group-item">
+            <strong><%= link_to project.name, project_path(project) %></strong> - <%= project.description %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Admin Panel -->
+  <% if current_user.admin? %>
+    <div class="row mt-5">
+      <div class="col">
+        <h2>Admin Panel</h2>
+
+        <!-- Users Table -->
+
+        <!-- Add User Button -->
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+          Add New User
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="password-feedback"></div> <!-- Placeholder for the generated password -->
+        <form id="add-user-form">
+  <div class="mb-3">
+    <label for="username" class="form-label">Username</label>
+    <input type="text" id="username" name="user[username]" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" id="email" name="user[email]" class="form-control" required>
+  </div>
+  <div class="mb-3">
+    <label for="role" class="form-label">Role</label>
+    <select id="role" name="user[role]" class="form-select" required>
+      <% User.roles.each_key do |role| %>
+        <option value="<%= role %>"><%= role.titleize %></option>
+      <% end %>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Create User</button>
+</form>
+
+
+      </div>
+    </div>
+  </div>
+</div>

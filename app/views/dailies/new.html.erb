@@ -1,0 +1,10 @@
+<h1>Upload New Daily</h1>
+<%= form_with model: [@project, @daily], local: true do |form| %>
+  <div>
+    <%= form.label :video, "Upload Video" %>
+    <%= form.file_field :video %>
+  </div>
+  <div>
+    <%= form.submit "Upload Daily" %>
+  </div>
+<% end %>
