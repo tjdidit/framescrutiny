@@ -3,7 +3,7 @@ class DashboardController < ApplicationController
   before_action :authenticate_user!
 
   def index
-     @projects = current_user.projects || []
+     @projects = current_user.projects
     Rails.logger.debug "Projects for dashboard: #{@projects.inspect}"    
     case current_user.role
     when 'admin'

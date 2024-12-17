@@ -1,7 +1,7 @@
 class User < ApplicationRecord
   # Associations
-  has_and_belongs_to_many :projects
   has_many :assigned_revisions, class_name: "Revision", foreign_key: "animator_id"
+  has_many :projects
 
   # Devise Modules
   devise :database_authenticatable, :recoverable, :rememberable, :validatable

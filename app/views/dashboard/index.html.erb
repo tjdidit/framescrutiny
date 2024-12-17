@@ -7,9 +7,13 @@
      <h2>Your Projects</h2>
 
 <ul id="project-list">
+  <% if @projects.any? %>
   <% @projects.each do |project| %>
-    <li><%= project.name %>: <%= project.description %></li>
+    <p><%= project.name %> - <%= project.description %></p>
   <% end %>
+<% else %>
+  <p>No projects found. Start by creating one!</p>
+<% end %>
 </ul>
 
 <!-- Message when there are no projects -->
